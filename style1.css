@@ -44,3 +44,11 @@ body {
     border-radius: 20px;
     max-width: 90vw;
 }
+
+.table-wrapper{
+    max-width: 1000% !important;
+}
+
+td{
+    word-break:break-all;
+}
