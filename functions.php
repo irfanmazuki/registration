@@ -17,6 +17,11 @@
                 while($row=$result->fetch_assoc()){
                     echo json_encode($row);
                 }}
-            break;      
-    }   
+            break;
+        case 'deleteById':
+            // sql to delete a record
+            $query = "DELETE FROM student WHERE id=".$id;
+            $result = $con->query($query);
+            break;
+    }
 ?>

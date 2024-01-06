@@ -60,7 +60,7 @@
 			echo "<tr><td>".$row["Id"]."</td><td>".$row["first_Name"]."</td><td>".$row["Last_Name"]."</td><td>".date_format($date,"d M Y")."</td><td>".$row["Gender"]."</td><td>".$row["Email"]."</td><td>".$row["Phone_number"]."</td><td>".$row["Course"]."</td><td>
                   <i type='button' onClick='view(".$row["Id"].")' data-toggle='modal' data-target='#viewPop' class='fa-solid fa-eye'></i>
                   <i type='button' onClick='edit(".$row["Id"].")' data-toggle='modal' data-target='#editPop' class='fa-solid fa-pen-to-square'></i>
-                  <i type='button' onClick='delete(".$row["Id"].")' data-toggle='modal' data-target='#deletePop' class='fa-solid fa-trash'></i>
+                  <i type='button' onClick='deleteRecord(".$row["Id"].")' data-toggle='modal' data-target='#deletePop' class='fa-solid fa-trash'></i>
                   </td></tr>";
 		}
 		echo "</table>";
@@ -160,13 +160,15 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" style="border-width: 0px;" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" style="background-color: #ff9d0d; border-width: 0px;" class="btn btn-primary">Delete</button>
+                    <button type="button" style="background-color: #ff9d0d; border-width: 0px;" class="btn btn-primary" onClick="confirmDeletion()">Delete</button>
                   </div>
                 </div>
               </div>
             </div> 
 </body>
 <script>
+
+  var selectedDeletionId = 0;
     function view(id){
       $("#selectedViewId").attr("value", id);
       $("#varForm").submit();
@@ -186,6 +188,23 @@
             $("#edit_first_name").attr("value", record["first_Name"]);
           }
       });
-    }   
+    };
+
+    function deleteRecord(id){
+      selectedDeletionId = id;
+    }
+
+    function confirmDeletion(){
+      $.ajax({
+          type: "POST",
+          url: 'functions.php',
+          data: {functionname: 'deleteById', id: selectedDeletionId},
+          success:function(data) {
+            $("#deletePop").modal("hide");
+            location.reload();
+            alert("record successfully deleted!");
+          }
+      });
+    }
   </script>
 </html>
