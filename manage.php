@@ -184,7 +184,6 @@
           success:function(data) {
             var record = JSON.parse(data);
             $("#edit_first_name").attr("value", record["first_Name"]);
-            
           }
       });
     }   
