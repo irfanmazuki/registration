@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
@@ -108,18 +108,39 @@
             <div class="modal fade" id="editPop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+                
+
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">WARNING</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    Are you sure you want edit data ?
+                  <div class="editForm">
+                <form>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">First Name</label>
+                    <input   class="form-control" id="edit_first_name" placeholder="First Name">
+                    <label for="exampleInputPassword1">Last Name</label>
+                    <input   class="form-control" id="exampleInputPassword1" placeholder="Last name">
+                    <label for="exampleInputEmail1">Birthday</label>
+                    <input   class="form-control" id="exampleInputEmail1" placeholder="Birthday">
+                    <label for="exampleInputPassword1">Gender</label>
+                    <input   class="form-control" id="exampleInputPassword1" placeholder="Gender">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input   class="form-control" id="exampleInputEmail1" placeholder="Email">
+                    <label for="exampleInputPassword1">Phone Number</label>
+                    <input   class="form-control" id="exampleInputPassword1" placeholder="Phone Number">
+                    <label for="exampleInputEmail1">Course</label>
+                    <input   class="form-control" id="exampleInputEmail1" placeholder="Course">
+                  </div>
+                  
+                </form>
+
                   </div>
                   <div class="modal-footer">
                     <button type="button" style="border-width: 0px;" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" style="background-color: #ff9d0d; border-width: 0px;" class="btn btn-primary">Edit</button>
+                    <button type="button" style="background-color: #ff9d0d; border-width: 0px;" class="btn btn-primary">Update</button>
                   </div>
                 </div>
               </div>
@@ -146,12 +167,26 @@
             </div> 
 </body>
 <script>
-     function view(id){
+    function view(id){
       $("#selectedViewId").attr("value", id);
       $("#varForm").submit();
       <?php
       refreshdata();
       ?>
      }
+
+    function edit(id)
+    {
+      $.ajax({
+          type: "POST",
+          url: 'functions.php',
+          data: {functionname: 'getRecordById', id: id}, 
+          success:function(data) {
+            var record = JSON.parse(data);
+            $("#edit_first_name").attr("value", record["first_Name"]);
+            
+          }
+      });
+    }   
   </script>
 </html>
