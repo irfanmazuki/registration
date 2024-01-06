@@ -119,20 +119,41 @@
                   <div class="editForm">
                 <form>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">First Name</label>
+                    <label for="label_edit_first_name">First Name</label>
                     <input   class="form-control" id="edit_first_name" placeholder="First Name">
-                    <label for="exampleInputPassword1">Last Name</label>
-                    <input   class="form-control" id="exampleInputPassword1" placeholder="Last name">
-                    <label for="exampleInputEmail1">Birthday</label>
-                    <input   class="form-control" id="exampleInputEmail1" placeholder="Birthday">
-                    <label for="exampleInputPassword1">Gender</label>
-                    <input   class="form-control" id="exampleInputPassword1" placeholder="Gender">
+                    <label for="label_edit_last_name">Last Name</label>
+                    <input   class="form-control" id="edit_last_name" placeholder="Last name">
+                    <label for="label_edit_birthday">Birthday</label>
+                    <input   class="form-control" id="edit_birthday" placeholder="Birthday" type="date">
+                    <label for="label_edit_gender">Gender</label>
+                    <div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="editCbFemale"
+                                value="Female" name="gender" checked required/>
+                        <label class="form-check-label" for="femaleGender">Female</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" id="editCbMale"
+                                  value="Male" name="gender" required/>
+                          <label class="form-check-label" for="maleGender">Male</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" id="editCbOther"
+                                  value="Other" name="gender" required/>
+                          <label class="form-check-label" for="otherGender">Other</label>
+                      </div>
+                    </div>
                     <label for="exampleInputEmail1">Email</label>
-                    <input   class="form-control" id="exampleInputEmail1" placeholder="Email">
+                    <input   class="form-control" id="edit_email" placeholder="Email">
                     <label for="exampleInputPassword1">Phone Number</label>
-                    <input   class="form-control" id="exampleInputPassword1" placeholder="Phone Number">
+                    <input   class="form-control" id="edit_phone_number" placeholder="Phone Number">
                     <label for="exampleInputEmail1">Course</label>
-                    <input   class="form-control" id="exampleInputEmail1" placeholder="Course">
+                    <select name="course" class="select form-control" id="edit_course" required>
+                        <option value="0" disabled>Choose option</option>
+                        <option value="Coding" selected>Coding</option>
+                        <option value="3d Modelling">3d Modelling</option>
+                        <option value="Game Development">Game Development</option>
+                    </select>
                   </div>
                   
                 </form>
@@ -169,42 +190,56 @@
 <script>
 
   var selectedDeletionId = 0;
-    function view(id){
-      $("#selectedViewId").attr("value", id);
-      $("#varForm").submit();
-      <?php
-      refreshdata();
-      ?>
-     }
-
-    function edit(id)
-    {
-      $.ajax({
-          type: "POST",
-          url: 'functions.php',
-          data: {functionname: 'getRecordById', id: id}, 
-          success:function(data) {
-            var record = JSON.parse(data);
-            $("#edit_first_name").attr("value", record["first_Name"]);
-          }
-      });
-    };
-
-    function deleteRecord(id){
-      selectedDeletionId = id;
+  function view(id){
+    $("#selectedViewId").attr("value", id);
+    $("#varForm").submit();
+    <?php
+    refreshdata();
+    ?>
     }
 
-    function confirmDeletion(){
-      $.ajax({
-          type: "POST",
-          url: 'functions.php',
-          data: {functionname: 'deleteById', id: selectedDeletionId},
-          success:function(data) {
-            $("#deletePop").modal("hide");
-            location.reload();
-            alert("record successfully deleted!");
+  function edit(id)
+  {
+    $.ajax({
+        type: "POST",
+        url: 'functions.php',
+        data: {functionname: 'getRecordById', id: id}, 
+        success:function(data) {
+          var record = JSON.parse(data);
+          $("#edit_first_name").attr("value", record["first_Name"]);
+          $("#edit_last_name").attr("value", record["Last_Name"]);
+          $("#edit_birthday").attr("value", record["Birthday"]);
+          $("#edit_email").attr("value", record["Email"]);
+          $("#edit_phone_number").attr("value", record["Phone_number"]);
+          if(record["Gender"] == "Female"){
+            $("#editCbFemale").prop("checked", true);
           }
-      });
-    }
+          else if(record["Gender"] == "Male"){
+            $("#editCbMale").prop("checked", true);
+          }
+          else{
+            $("#editCbOther").prop("checked", true);
+          }
+          $("#edit_course").val(record["Course"]);
+        }
+    });
+  };
+
+  function deleteRecord(id){
+    selectedDeletionId = id;
+  }
+
+  function confirmDeletion(){
+    $.ajax({
+        type: "POST",
+        url: 'functions.php',
+        data: {functionname: 'deleteById', id: selectedDeletionId},
+        success:function(data) {
+          $("#deletePop").modal("hide");
+          location.reload();
+          alert("record successfully deleted!");
+        }
+    });
+  }
   </script>
 </html>
